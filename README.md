@@ -1,7 +1,7 @@
 # CarND-Path-Planning-Project
 
 [![Youtube](http://img.youtube.com/vi/Aq-EBnPpHkY/0.jpg)](https://www.youtube.com/watch?v=Aq-EBnPpHkY "Pathplanning")
-   
+  (click to see Youtube Video)
 
 ## Objective
 - Let a car autonomously plan path on highway based on given sensor fusion data (positions and velocities of other cars) and map data
