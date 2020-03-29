@@ -1,6 +1,6 @@
 # CarND-Path-Planning-Project
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/Aq-EBnPpHkY" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+[![Youtube](http://img.youtube.com/vi/Aq-EBnPpHkY/0.jpg)](https://www.youtube.com/watch?v=Aq-EBnPpHkY "Pathplanning")
    
 
 ## Objective
@@ -8,7 +8,10 @@
 
 ## Approach 
 - Based on given map data, change X-Y position data into S-D data
-- Set target location to go (upto 100 meters in front of the car) and create waypoints toward that point. The waypoints are smoothed to quadratic using spline library (https://kluge.in-chemnitz.de/opensource/spline/)
+- Set target location to go (upto 100 meters in front of the car) 
+- Also set taret velocity (default is slightly slower than speed limit)
+- Temp waypoints are created and smoothed to quadratic using spline library (https://kluge.in-chemnitz.de/opensource/spline/)
+- Create waypoints toward that point so that the acceleration does not exceed a threshold
 - Based on sensor fusion data, change the target location (thus change the lane and distance/speed), by rule based algorithm: 
   - if there is no car in front, set target speed to close to the speed limit
   - if threr is a car in near front, keep the same speed of the car in front
