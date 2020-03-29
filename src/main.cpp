@@ -138,6 +138,10 @@ int main() {
           double sgap_front_rightlane = 9999.0; 
           double v_front_rightlane; 
           
+          int id_back_samelane;
+          double sgap_back_samelane = 9999.0; 
+          double v_back_samelane; 
+          
           int id_back_leftlane;
           double sgap_back_leftlane = 9999.0; 
           double v_back_leftlane; 
@@ -165,9 +169,15 @@ int main() {
                    sgap_front_samelane = check_car_s - car_s;
                    v_front_samelane = check_speed; 
                 } 
+                // observe back
+                if (check_car_s <= car_s && car_s - check_car_s < sgap_back_samelane ){               		
+                   id_back_samelane = i; 
+                   sgap_back_samelane = car_s - check_car_s;
+                   v_back_samelane = check_speed; 
+                } 
             } 
             // observe left lane 
-            if ( d < LW*(lane) && d > LW*lane-1){
+            if ( d < LW*(lane) && d > LW*(lane-1)){
               // observe front
               	if (check_car_s > car_s && check_car_s - car_s < sgap_front_leftlane ){               		
                    id_front_leftlane = i; 
@@ -182,7 +192,7 @@ int main() {
                 } 
             }
             // observe right lane
-            if ( d < LW*(lane+2) && d > LW*lane+1){
+            if ( d < LW*(lane+2) && d > LW*(lane+1)){
               // observe front
               	if (check_car_s > car_s && check_car_s - car_s < sgap_front_rightlane ){               		
                    id_front_rightlane = i; 
@@ -197,6 +207,11 @@ int main() {
                 } 
             }
           }
+          
+          std::cout << "lane:" << lane << " phase:" << phase << " s_f_s:" << sgap_front_samelane 
+            << " s_f_l:" << sgap_front_leftlane << " s_f_r:"  
+            << sgap_front_rightlane << " s_b_s:"  << sgap_back_samelane << " s_b_l:" 
+            << sgap_back_leftlane << " s_b_r:" << sgap_back_rightlane <<std::endl; 
           
           
           // following front car
@@ -219,8 +234,9 @@ int main() {
               // change to left lane 
               if (lane == 1 && 
                   sgap_front_samelane < 70.0 && 
-                  sgap_front_leftlane > 100.0 &&
-                  sgap_back_leftlane > 50
+                  sgap_front_samelane < sgap_front_leftlane && 
+                  sgap_front_leftlane > sgap_front_rightlane && 
+                  sgap_back_leftlane > 50.0 
                  ){
                     lane = 0;  
                 	phase = 1; 
@@ -232,8 +248,9 @@ int main() {
               // back to center lane
 
               else if (lane == 0 && 
-                  sgap_front_rightlane > 100.0 &&
-                  sgap_back_rightlane > 50
+                  (sgap_front_samelane < sgap_front_rightlane || sgap_front_rightlane > 150 ) &&
+                  sgap_back_rightlane > 50.0 
+                  
                  ){
                     lane = 1;  
                 	phase = 1;
@@ -244,8 +261,8 @@ int main() {
               // change to right lane 
               else if (lane == 1 && 
                   sgap_front_samelane < 70.0 && 
-                  sgap_front_rightlane > 100.0 &&
-                  sgap_back_rightlane > 50
+                  sgap_front_samelane < sgap_front_rightlane && 
+                  sgap_back_rightlane > 50.0
                  ){
                     lane = 2;  
                 	phase = 1; 
@@ -257,7 +274,7 @@ int main() {
               // back to center lane
 
               else if (lane == 2 && 
-                  sgap_front_leftlane > 100.0 &&
+                  (sgap_front_samelane < sgap_front_leftlane || sgap_front_leftlane > 150 )&&
                   sgap_back_leftlane > 50
                  ){
                     lane = 1;  
